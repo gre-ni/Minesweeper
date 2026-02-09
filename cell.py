@@ -1,18 +1,20 @@
 from tkinter import Label
 
 class Cell:
-    def __init__(self, is_mine=False):
+    def __init__(self, x, y, is_mine=False):
         self.is_mine = is_mine
+        self.x = x
+        self.y = y
         self.cell_btn_object = None
 
 
     def create_btn_object(self, location):
         lbl = Label( # Need to have label instead of button because of Mac behaviour
             location,
-            text="Text",
+            text=f"{self.x}:{self.y}",
             bg="#AAAAAA",
-            width=4,
-            height=2,
+            width=12,
+            height=4,
             relief="raised",
             borderwidth=2
         )
