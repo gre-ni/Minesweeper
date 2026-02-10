@@ -1,11 +1,15 @@
 from tkinter import Label
 
 class Cell:
+    all = []
     def __init__(self, x, y, is_mine=False):
         self.is_mine = is_mine
         self.x = x
         self.y = y
         self.cell_btn_object = None
+        
+        # Append instantiated object to Cell.all list
+        Cell.all.append(self)
 
 
     def create_btn_object(self, location):
@@ -49,3 +53,9 @@ class Cell:
         
         # Function:
         print("I am right clicked!")
+
+
+    @staticmethod
+    def randomise_mines():
+        # How can we store instances inside a list
+        pass

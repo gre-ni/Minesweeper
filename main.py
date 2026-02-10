@@ -48,6 +48,7 @@ centre_frame = Frame(
 # I want the pixel line of top and left frame to overlap
 centre_frame.place(x=utils.width_prct(25)-1,y=utils.height_prct(25)-1) 
 
+# Instantiate a grid of cell objects:
 for x in range(settings.GRID_SIZE):
     for y in range(settings.GRID_SIZE):
         c = Cell(x, y)
@@ -55,6 +56,8 @@ for x in range(settings.GRID_SIZE):
         c.cell_btn_object.grid(
             column=x, row=y
             )
+
+print(Cell.all)
 
 
 # Run the window:
