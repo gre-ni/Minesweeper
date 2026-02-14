@@ -1,14 +1,15 @@
 from tkinter import Label
+import random
+import settings
 
 class Cell:
-    all = []
+    all = [] # This list will populate as all objects get instantiated, as append is part of init
     def __init__(self, x, y, is_mine=False):
         self.is_mine = is_mine
         self.x = x
         self.y = y
         self.cell_btn_object = None
         
-        # Append instantiated object to Cell.all list
         Cell.all.append(self)
 
 
@@ -49,7 +50,7 @@ class Cell:
         if self.cell_btn_object: # Ensures I don't accidentally call None object
             self.cell_btn_object.config(relief="sunken")
             # Returning it back to unpressed:
-            self.cell_btn_object.after(200, lambda: self.cell_btn_object.config(relief="raised"))
+            # self.cell_btn_object.after(200, lambda: self.cell_btn_object.config(relief="raised"))
         
         # Function:
         print("I am right clicked!")
@@ -57,5 +58,10 @@ class Cell:
 
     @staticmethod
     def randomise_mines():
-        # How can we store instances inside a list
-        pass
+        picked_cells = random.sample(
+            Cell.all, settings.MINES_COUNT)
+        for picked_cell in picked_cells:
+            picked_cell.is_mine = True
+    
+    def __repr__(self):
+        return f"Cell({self.x}, {self.y})"
