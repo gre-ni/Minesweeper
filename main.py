@@ -1,10 +1,10 @@
 from cell import Cell
 import settings
+# GUI library -> comes with Python:
 from tkinter import *
 import utils
-# Library for UI -> comes with Python
 
-# "root" is naming convention for tkinter projects:
+# "root" -> naming convention for tkinter projects:
 root = Tk() # Instantiation of a window
 
 # Window settings:
@@ -33,8 +33,7 @@ left_frame = Frame(
     highlightbackground="#525252",
     highlightthickness=1
 )
-# I want the pixel line of top and left frame to overlap
-left_frame.place(x=0,y=utils.height_prct(25)-1) 
+left_frame.place(x=0,y=utils.height_prct(25)-1) # -1 For border overlap
 
 # Frames:
 centre_frame = Frame(
@@ -45,8 +44,7 @@ centre_frame = Frame(
     highlightbackground="#525252",
     highlightthickness=1
 )
-# I want the pixel line of top and left frame to overlap
-centre_frame.place(x=utils.width_prct(25)-1,y=utils.height_prct(25)-1) 
+centre_frame.place(x=utils.width_prct(25)-1,y=utils.height_prct(25)-1) # -1 For border overlap
 
 # Instantiate a grid of cell objects:
 for x in range(settings.GRID_SIZE):
@@ -57,6 +55,13 @@ for x in range(settings.GRID_SIZE):
             column=x, row=y
             )
 
+# Call label object, pass in location:
+Cell.create_cell_count_label(left_frame)
+Cell.cell_count_label_object.place(
+    x=10, y=10
+)
+
+# Place mines to random locations:
 Cell.randomise_mines()
 
 
