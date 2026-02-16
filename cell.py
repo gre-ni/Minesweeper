@@ -1,9 +1,10 @@
-from tkinter import Label
 import random
 import settings
+import sys
+from tkinter import Label, messagebox
 
 class Cell:
-    all = [] # This list will populate as all objects get instantiated, as append is part of init
+    all = [] # List to populate as all objects get instantiated -> linear search
     cell_count = settings.GRID_SIZE ** 2
     cell_count_label_object = None
     
@@ -29,9 +30,8 @@ class Cell:
             # text=f"{self.x}, {self.y}"
         )
         # .bind allows labels listen to events
-        # <Button-1> == event which represents left mouse click
         lbl.bind("<Button-1>", self.left_click_actions)
-        lbl.bind("<Button-2>", self.right_click_actions)
+        lbl.bind("<Button-2>", self.right_click_actions) # Right touchpad, 3 might be on a physical mouse
         
         self.cell_btn_object = lbl
     
@@ -42,7 +42,7 @@ class Cell:
             self.show_mine()
         else:
             # Automatically uncover empty areas:
-            if self.surrounding_cells_amount == 0:
+            if self.surrounding_cells_amount == "":
                 for cell_obj in self.surrounding_cells:
                     cell_obj.show_cell()
             self.show_cell()
@@ -63,11 +63,7 @@ class Cell:
             self.is_mine_candidate = False
     
     
-    def show_mine(self):
-        # TODO: Logic to interrupt the game and display a message that player lost.
-        # Temporary solution while working:
-        self.cell_btn_object.configure(bg="#E82C2C")
-    
+    # Cell calculation logic:
     
     @property # Converts to read-only kind of attribute
     def surrounding_cells(self):
@@ -99,8 +95,19 @@ class Cell:
             if cell.is_mine:
                 counter += 1
         
-        return counter
+        if counter != 0:
+            return counter
+        else:
+            return ""
    
+    
+    def get_cell_by_axis(self, x, y):
+        for cell in Cell.all:
+            if cell.x == x and cell.y == y:
+                return cell
+            
+    
+    # Reveal logic:
     
     def show_cell(self):
         if not self.is_opened: # Only count each shown cell once
@@ -112,11 +119,17 @@ class Cell:
         self.is_opened = True
 
 
-    def get_cell_by_axis(self, x, y):
-        for cell in Cell.all:
-            if cell.x == x and cell.y == y:
-                return cell
+    def show_mine(self):
+        self.cell_btn_object.configure(bg="#8F1B1B", text="☠️")
+        self.cell_btn_object.after(500, self._game_over)
+        
     
+    def _game_over(self):
+        messagebox.showinfo("You clicked on a mine.", "Game over!")
+        sys.exit()
+
+    
+    # Statics methods:
     
     @staticmethod
     def create_cell_count_label(location):

@@ -4,7 +4,7 @@ import settings
 from tkinter import *
 import utils
 
-# "root" -> naming convention for tkinter projects:
+
 root = Tk() # Instantiation of a window
 
 # Window settings:
@@ -13,7 +13,9 @@ root.resizable(False, False)
 root.configure(bg="#2C2C2C")
 root.title("Minesweeper game")
 
+
 # Frames:
+
 top_frame = Frame(
     root, # Location
     bg="#202020",
@@ -24,7 +26,7 @@ top_frame = Frame(
 )
 top_frame.place(x=0,y=0)
 
-# Frames:
+
 left_frame = Frame(
     root, # Location
     bg="#202020",
@@ -35,7 +37,7 @@ left_frame = Frame(
 )
 left_frame.place(x=0,y=utils.height_prct(25)-1) # -1 For border overlap
 
-# Frames:
+
 centre_frame = Frame(
     root, # Location
     bg="#2C2C2C",
@@ -55,7 +57,7 @@ for x in range(settings.GRID_SIZE):
             column=x, row=y
             )
 
-# Call label object, pass in location:
+# Call label object for status display:
 Cell.create_cell_count_label(left_frame)
 Cell.cell_count_label_object.place(
     x=10, y=10
@@ -65,5 +67,5 @@ Cell.cell_count_label_object.place(
 Cell.randomise_mines()
 
 
-# Run the window:
-root.mainloop() # It will run until I close it
+# Run the window until closed:
+root.mainloop()
