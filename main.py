@@ -2,6 +2,7 @@ from cell import Cell
 import settings
 # GUI library -> comes with Python:
 from tkinter import *
+from tkinter import messagebox
 import utils
 
 
@@ -48,24 +49,50 @@ centre_frame = Frame(
 )
 centre_frame.place(x=utils.width_prct(25)-1,y=utils.height_prct(10)-1) # -1 For border overlap
 
-# Instantiate a grid of cell objects:
-for x in range(settings.GRID_SIZE):
-    for y in range(settings.GRID_SIZE):
-        c = Cell(x, y)
-        c.create_btn_object(centre_frame)
-        c.cell_btn_object.grid(
-            column=x, row=y
-            )
 
-# Call label object for status display:
-Cell.create_cell_count_label(left_frame)
-Cell.cell_count_label_object.place(
-    x=10, y=10
-)
+def start_game():
+    Cell.reset()
 
-# Place mines to random locations:
-Cell.randomise_mines()
+    for widget in centre_frame.winfo_children():
+        widget.destroy()
+        
+    # Instantiate a grid of cell objects:
+    for x in range(settings.GRID_SIZE):
+        for y in range(settings.GRID_SIZE):
+            c = Cell(x, y)
+            c.create_btn_object(centre_frame)
+            c.cell_btn_object.grid(
+                column=x, row=y
+                )
 
+    # Call label object for status display:
+    Cell.create_cell_count_label(left_frame)
+    Cell.cell_count_label_object.place(
+        x=10, y=10
+    )
+
+    # Place mines to random locations:
+    Cell.randomise_mines()
+
+
+def handle_game_over(won):
+    if won:
+        title = "🎉 You Won!"
+        message = "Congratulations!\n\nPlay again?"
+    else:
+        title = "💣 Game Over"
+        message = "You hit a mine!\n\nPlay again?"
+
+    answer = messagebox.askyesno(title, message)
+
+    if answer:
+        start_game()
+    else:
+        root.destroy()
+
+
+Cell.set_game_over_callback(handle_game_over)
+start_game()
 
 # Run the window until closed:
 root.mainloop()

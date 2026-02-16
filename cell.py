@@ -7,6 +7,7 @@ class Cell:
     all = [] # List to populate as all objects get instantiated -> linear search
     cell_count = settings.GRID_SIZE ** 2
     cell_count_label_object = None
+    game_over_callback = None
     
     def __init__(self, x, y, is_mine=False):
         self.is_mine = is_mine
@@ -134,13 +135,13 @@ class Cell:
         
     
     def _game_over(self):
-        messagebox.showinfo("You clicked on a mine.", "Game over!")
-        sys.exit()
+        if hasattr(Cell, "game_over_callback"):
+            Cell.game_over_callback(False)  # False = lost
 
     
     def _game_won(self):
-        messagebox.showinfo("You have won!")
-        sys.exit()       
+        if hasattr(Cell, "game_over_callback"):
+            Cell.game_over_callback(True)  # True = won  
     
     
     # Statics methods:
@@ -165,7 +166,17 @@ class Cell:
             Cell.all, settings.MINES_COUNT)
         for picked_cell in picked_cells:
             picked_cell.is_mine = True
+            
     
+    @staticmethod
+    def set_game_over_callback(func):
+        Cell.game_over_callback = func
+    
+    
+    @staticmethod
+    def reset():
+        Cell.all = []
+        Cell.cell_count = settings.GRID_SIZE ** 2
     
     # For debugging:
     def __repr__(self):

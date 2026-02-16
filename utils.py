@@ -5,6 +5,3 @@ def height_prct(percentage: int | float):
 
 def width_prct(percentage: int | float):
     return int((settings.WIDTH / 100) * percentage)
-
-
-# print(height_prct(25))
