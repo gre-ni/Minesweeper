@@ -10,7 +10,7 @@ root = Tk() # Instantiation of a window
 # Window settings:
 root.geometry(f"{settings.WIDTH}x{settings.HEIGHT}")
 root.resizable(False, False)
-root.configure(bg="#2C2C2C")
+root.configure(bg=settings.BG_COLOUR)
 root.title("Minesweeper game")
 
 
@@ -18,10 +18,10 @@ root.title("Minesweeper game")
 
 top_frame = Frame(
     root, # Location
-    bg="#202020",
+    bg=settings.BG_COLOUR,
     width=utils.width_prct(100),
-    height=utils.height_prct(25),
-    highlightbackground="#525252",
+    height=utils.height_prct(10),
+    highlightbackground=settings.LINE_COLOUR,
     highlightthickness=1
 )
 top_frame.place(x=0,y=0)
@@ -29,24 +29,24 @@ top_frame.place(x=0,y=0)
 
 left_frame = Frame(
     root, # Location
-    bg="#202020",
+    bg=settings.BG_COLOUR,
     width=utils.width_prct(25),
-    height=settings.HEIGHT-utils.height_prct(25),
-    highlightbackground="#525252",
+    height=settings.HEIGHT-utils.height_prct(10),
+    highlightbackground=settings.LINE_COLOUR,
     highlightthickness=1
 )
-left_frame.place(x=0,y=utils.height_prct(25)-1) # -1 For border overlap
+left_frame.place(x=0,y=utils.height_prct(10)-1) # -1 For border overlap
 
 
 centre_frame = Frame(
     root, # Location
-    bg="#2C2C2C",
+    bg=settings.BG_COLOUR,
     width=utils.width_prct(75),
-    height=settings.HEIGHT-utils.height_prct(25),
-    highlightbackground="#525252",
+    height=settings.HEIGHT-utils.height_prct(10),
+    highlightbackground=settings.LINE_COLOUR,
     highlightthickness=1
 )
-centre_frame.place(x=utils.width_prct(25)-1,y=utils.height_prct(25)-1) # -1 For border overlap
+centre_frame.place(x=utils.width_prct(25)-1,y=utils.height_prct(10)-1) # -1 For border overlap
 
 # Instantiate a grid of cell objects:
 for x in range(settings.GRID_SIZE):

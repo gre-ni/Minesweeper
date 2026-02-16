@@ -22,7 +22,8 @@ class Cell:
     def create_btn_object(self, location):
         lbl = Label( # Need to have label instead of button because of Mac behaviour
             location,
-            bg="#AAAAAA",
+            bg=settings.TILE_COLOUR,
+            fg=settings.TEXT_COLOUR,
             width=4,
             height=2,
             relief="raised",
@@ -46,7 +47,14 @@ class Cell:
                 for cell_obj in self.surrounding_cells:
                     cell_obj.show_cell()
             self.show_cell()
-
+            # Winning:
+            if Cell.cell_count == settings.MINES_COUNT:
+                self.cell_btn_object.after(500, self._game_won)
+            
+        # Once clicked, cannot be clicked again - either opened or mine:
+        self.cell_btn_object.unbind("<Button-1>") 
+        self.cell_btn_object.unbind("<Button-2>") # Can't flag opened cells
+        
 
     def right_click_actions(self, event):
         # Aesthetic:
@@ -56,10 +64,10 @@ class Cell:
             self.cell_btn_object.after(200, lambda: self.cell_btn_object.config(relief="raised"))
         
         if not self.is_mine_candidate:
-            self.cell_btn_object.configure(bg="#D6D6D6", text="🚩")
+            self.cell_btn_object.configure(bg=settings.FLAG_COLOUR, text="🌷")
             self.is_mine_candidate = True
         else:
-            self.cell_btn_object.configure(bg="#AAAAAA", text="")
+            self.cell_btn_object.configure(bg=settings.TILE_COLOUR, text="")
             self.is_mine_candidate = False
     
     
@@ -112,7 +120,8 @@ class Cell:
     def show_cell(self):
         if not self.is_opened: # Only count each shown cell once
             Cell.cell_count -= 1
-            self.cell_btn_object.configure(text=f"{self.surrounding_cells_amount}", relief="sunken")
+            # Change bg here in case this was a flagged cell w/ diff background
+            self.cell_btn_object.configure(bg=settings.TILE_COLOUR,text=f"{self.surrounding_cells_amount}", relief="sunken")
             if Cell.cell_count_label_object: # Check first that label is initialised
                 Cell.cell_count_label_object.configure(text=f"Cells left: {Cell.cell_count}") # Refresh info
 
@@ -120,7 +129,7 @@ class Cell:
 
 
     def show_mine(self):
-        self.cell_btn_object.configure(bg="#8F1B1B", text="☠️")
+        self.cell_btn_object.configure(bg=settings.MINE_COLOUR, text="☠️")
         self.cell_btn_object.after(500, self._game_over)
         
     
@@ -129,16 +138,21 @@ class Cell:
         sys.exit()
 
     
+    def _game_won(self):
+        messagebox.showinfo("You have won!")
+        sys.exit()       
+    
+    
     # Statics methods:
     
     @staticmethod
     def create_cell_count_label(location):
         lbl = Label(
             location, 
-            bg="#2C2C2C",
+            bg=settings.BG_COLOUR,
             text=f"Cells left: {Cell.cell_count}",
-            fg="white",
-            font=("Helvetica", 22),
+            fg=settings.TEXT_COLOUR,
+            font=(settings.TEXT_FONT, 18),
             width=12,
             height=2
         )
