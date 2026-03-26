@@ -7,6 +7,7 @@ class Cell:
     all = [] # List to populate as all objects get instantiated -> linear search
     cell_count = settings.GRID_SIZE ** 2
     cell_count_label_object = None
+    title_label_object = None
     game_over_callback = None
     
     def __init__(self, x, y, is_mine=False):
@@ -65,7 +66,7 @@ class Cell:
             self.cell_btn_object.after(200, lambda: self.cell_btn_object.config(relief="raised"))
         
         if not self.is_mine_candidate:
-            self.cell_btn_object.configure(bg=settings.FLAG_COLOUR, text="🌷")
+            self.cell_btn_object.configure(bg=settings.FLAG_COLOUR, text="⚑", fg=settings.TEXT_COLOUR)
             self.is_mine_candidate = True
         else:
             self.cell_btn_object.configure(bg=settings.TILE_COLOUR, text="")
@@ -158,6 +159,20 @@ class Cell:
             height=2
         )
         Cell.cell_count_label_object = lbl
+
+
+    @staticmethod
+    def create_title_label(location):
+        lbl = Label(
+            location, 
+            bg=settings.BG_COLOUR,
+            text=f"Welcome to Minesweeper, be careful! 💥",
+            fg=settings.TITLE_COLOUR, 
+            font=(settings.TEXT_FONT, 24),
+            width=34,
+            height=2
+        )
+        Cell.title_label_object = lbl
 
 
     @staticmethod

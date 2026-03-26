@@ -21,7 +21,7 @@ top_frame = Frame(
     root, # Location
     bg=settings.BG_COLOUR,
     width=utils.width_prct(100),
-    height=utils.height_prct(10),
+    height=utils.height_prct(15),
     highlightbackground=settings.LINE_COLOUR,
     highlightthickness=1
 )
@@ -29,25 +29,25 @@ top_frame.place(x=0,y=0)
 
 
 left_frame = Frame(
-    root, # Location
+    root, 
     bg=settings.BG_COLOUR,
     width=utils.width_prct(25),
-    height=settings.HEIGHT-utils.height_prct(10),
+    height=settings.HEIGHT-utils.height_prct(14),
     highlightbackground=settings.LINE_COLOUR,
     highlightthickness=1
 )
-left_frame.place(x=0,y=utils.height_prct(10)-1) # -1 For border overlap
+left_frame.place(x=0,y=utils.height_prct(15)-1) # -1 For border overlap
 
 
 centre_frame = Frame(
-    root, # Location
+    root,
     bg=settings.BG_COLOUR,
     width=utils.width_prct(75),
-    height=settings.HEIGHT-utils.height_prct(10),
+    height=settings.HEIGHT-utils.height_prct(15),
     highlightbackground=settings.LINE_COLOUR,
     highlightthickness=1
 )
-centre_frame.place(x=utils.width_prct(25)-1,y=utils.height_prct(10)-1) # -1 For border overlap
+centre_frame.place(x=utils.width_prct(25)-1,y=utils.height_prct(15)-1) # -1 For border overlap
 
 
 def start_game():
@@ -65,11 +65,16 @@ def start_game():
                 column=x, row=y
                 )
 
-    # Call label object for status display:
+    # Call label objects:
     Cell.create_cell_count_label(left_frame)
     Cell.cell_count_label_object.place(
         x=10, y=10
     )
+    Cell.create_title_label(top_frame)
+    Cell.title_label_object.place(
+        x=2, y=2
+    )
+    
 
     # Place mines to random locations:
     Cell.randomise_mines()
